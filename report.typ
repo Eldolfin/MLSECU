@@ -43,6 +43,10 @@
 #show heading: set block(above: 2.5em, below: 1.5em, sticky: true)
 #set heading(numbering: "1.1")
 
+// Link styling
+#show link: set text(fill: blue)
+#show link: underline
+
 // Table global styling
 #show table: set align(center)
 #show table: set block(breakable: false)
@@ -59,7 +63,7 @@
 
 = Introduction
 
-The rapid proliferation of Internet of Things (IoT) devices has exponentially increased the attack surface for cyber threats. Securing these networks requires robust, automated systems capable of detecting malicious activity in real-time. This project focuses on the design, deployment, and evaluation of a data handling chain dedicated to the analysis of cybersecurity data using batch processing.
+The rapid proliferation of Internet of Things (IoT) devices has exponentially increased the attack surface for cyber threats. Securing these networks requires robust, automated systems capable of detecting malicious activity in real-time. This project focuses on the design, deployment, and evaluation of a data handling chain dedicated to the analysis of cybersecurity data using batch processing. The complete implementation and experimental results are available in the accompanying Google Colab notebook: #link("https://colab.research.google.com/drive/18zDQF8IGrm2KfeUh-yLokUWrIQYx5TAf?usp=sharing")[Analysis Notebook].
 
 The primary scope of this work involves the analysis of the *CIC IoT-DIAD 2024* dataset, a modern collection of network traffic data representing various IoT attack scenarios. By leveraging this dataset, we aim to build a pipeline that can not only classify specific types of attacks but also detect anomalies without prior knowledge of attack signatures.
 
@@ -103,7 +107,7 @@ To understand the redundancy and relationship between features, we computed a co
 The analysis revealed high collinearity among several flow-based statistics (e.g., packet counts and byte counts), suggesting that dimensionality reduction techniques like PCA could be effective for feature extraction, although potentially limited by the nonlinear nature of the attack signatures.
 
 == Preprocessing Strategy
-Given the massive size of the dataset, which reaches 1.89 GB in its compressed form and expands significantly upon extraction, we adopted a resource-efficient preprocessing strategy. We first loaded a random 1% subset of each CSV file to maintain a manageable memory footprint while preserving the statistical properties of the data. During the cleaning phase, we handled infinite values and NaNs by replacing them with zeros and removed duplicate entries to ensure data quality. Categorical features, such as IP addresses and Protocols, were transformed using Label Encoding to make them suitable for mathematical modeling. Finally, all features were standardized using \`StandardScaler\` to ensure zero mean and unit variance, a crucial step for distance-based algorithms like K-Means and Isolation Forest.
+Given the massive size of the dataset, which reaches 1.89 GB in its compressed form and expands significantly upon extraction, we adopted a resource-efficient preprocessing strategy. Due to significant hardware and time constraints, we chose to load only a random 1% subset of each CSV file. This decision was largely driven by the limitations of the Google Colab environment, where loading and processing the full multi-gigabyte dataset would be near impossible or, at the very least, could not be completed in a timely manner within the session limits. By sampling 1% of each file, we maintained a manageable memory footprint that stayed within the available RAM while still preserving the overall statistical properties and class distributions of the data. During the cleaning phase, we handled infinite values and NaNs by replacing them with zeros and removed duplicate entries to ensure data quality. Categorical features, such as IP addresses and Protocols, were transformed using Label Encoding to make them suitable for mathematical modeling. Finally, all features were standardized using \`StandardScaler\` to ensure zero mean and unit variance, a crucial step for distance-based algorithms like K-Means and Isolation Forest.
 
 = Data Handling Chain Deployment
 
